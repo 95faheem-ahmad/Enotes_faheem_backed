@@ -1,9 +1,11 @@
 package com.siddiqui.ahmad.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -19,22 +21,47 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepo;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public Boolean saveCategory(CategoryDto categoryDto) {
 
-		Category category = new Category();
-		category.setName(categoryDto.getName());
-		category.setDescription(categoryDto.getDescription());
-		category.setIsActive(categoryDto.getIsActive());
-		category.setIsDeleted(false);
-		category.setCreatedBy(1);
+//		Category category = new Category();
+//		category.setName(categoryDto.getName());
+//		category.setDescription(categoryDto.getDescription());
+//		category.setIsActive(categoryDto.getIsActive());
+		Category category = modelMapper.map(categoryDto, Category.class);
+		if(!ObjectUtils.isEmpty(category.getId())) {
+			category.setIsDeleted(false);
+			category.setCreatedBy(1);	
+		}
+		else {
+			updateCategory(category);
+		}
 		Category saveCategory = categoryRepo.save(category);
 		if (ObjectUtils.isEmpty(saveCategory)) {
 			return false;
 		}
 
 		return true;
+	}
+
+	private void updateCategory(Category category) {
+		
+		Optional<Category> findById = categoryRepo.findById(category.getId());
+		
+		if(findById.isPresent()) {
+			Category exitsCategory = findById.get();
+			category.setCreatedBy(exitsCategory.getCreatedBy());
+			category.setCreationOn(exitsCategory.getCreationOn());
+			category.setIsDeleted(exitsCategory.getIsDeleted());
+			category.setIsActive(exitsCategory.getIsActive());
+			category.setUpdatedBy(1);
+			category.setUpdatedOn(new Date());
+		}
+		
 	}
 
 	@Override

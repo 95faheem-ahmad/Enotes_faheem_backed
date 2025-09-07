@@ -20,7 +20,7 @@ import com.siddiqui.ahmad.dto.CategoryResponse;
 import com.siddiqui.ahmad.service.CategoryService;
 
 @RestController
-@RequestMapping("api/v1/category")
+@RequestMapping("/api/v1/category")
 public class CategoryController {
   
 	@Autowired
@@ -52,7 +52,7 @@ public class CategoryController {
 	public ResponseEntity<?>getActiveCategory(){
 		
 		List<CategoryResponse> activeCategory = categoryService.getActiveCategory();
-		if(ObjectUtils.isArray(activeCategory)) {
+		if(ObjectUtils.isEmpty(activeCategory)) {
 			return ResponseEntity.noContent().build();
 		}
 		else {
