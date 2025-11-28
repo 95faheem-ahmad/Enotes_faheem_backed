@@ -15,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 import com.siddiqui.ahmad.dto.CategoryDto;
 import com.siddiqui.ahmad.dto.CategoryResponse;
 import com.siddiqui.ahmad.entity.Category;
+import com.siddiqui.ahmad.exception.ResourceNotFoundException;
 import com.siddiqui.ahmad.repository.CategoryRepository;
 import com.siddiqui.ahmad.service.CategoryService;
 
@@ -120,10 +121,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto getCategoryById(Integer id) {
+    public CategoryDto getCategoryById(Integer id) throws ResourceNotFoundException {
         log.info("Fetching category by id={}", id);
 
-        Optional<Category> optional = categoryRepo.findByIdAndIsDeletedFalse(id);
+        Optional<Category> optional = Optional.of(categoryRepo.findByIdAndIsDeletedFalse(id).orElseThrow(()->new ResourceNotFoundException("Category not found with "+id)));
         if (optional != null && optional.isPresent()) {
             Category category = optional.get();
             log.debug("Category found for id={}", id);

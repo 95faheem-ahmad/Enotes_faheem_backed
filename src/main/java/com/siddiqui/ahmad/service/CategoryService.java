@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.siddiqui.ahmad.dto.CategoryDto;
 import com.siddiqui.ahmad.dto.CategoryResponse;
+import com.siddiqui.ahmad.exception.ResourceNotFoundException;
 
 public interface CategoryService {
 	
@@ -13,7 +14,7 @@ public interface CategoryService {
 	
 	public List<CategoryResponse>getActiveCategory();
 	
-	public CategoryDto getCategoryById(Integer id);
+	public CategoryDto getCategoryById(Integer id) throws ResourceNotFoundException;
 	
 	public Boolean deleteCategory(Integer id);
 	
