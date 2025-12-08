@@ -18,6 +18,7 @@ import com.siddiqui.ahmad.entity.Category;
 import com.siddiqui.ahmad.exception.ResourceNotFoundException;
 import com.siddiqui.ahmad.repository.CategoryRepository;
 import com.siddiqui.ahmad.service.CategoryService;
+import com.siddiqui.ahmad.utils.Validation;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -29,12 +30,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ModelMapper modelMapper;
+    
+    @Autowired
+    private Validation validation;
 
     @Override
     public Boolean saveCategory(CategoryDto categoryDto) {
         log.info("Saving category: {}", categoryDto);
 
         try {
+        	// validation checking
+        	validation.categoryValidation(categoryDto);
             Category category = modelMapper.map(categoryDto, Category.class);
 
             if (ObjectUtils.isEmpty(category.getId())) {
