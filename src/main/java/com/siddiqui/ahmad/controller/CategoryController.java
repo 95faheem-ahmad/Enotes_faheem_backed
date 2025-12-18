@@ -42,8 +42,6 @@ public class CategoryController {
 	
 	@GetMapping("/categoyr")
 	public ResponseEntity<?>getAllCategory(){
-		String nm=null;
-		nm.toUpperCase();
 		List<CategoryDto> allCategory = categoryService.getAllCategory();
 		if(CollectionUtils.isEmpty(allCategory)) {
 			return ResponseEntity.noContent().build();

@@ -35,12 +35,15 @@ public class CategoryServiceImpl implements CategoryService {
     private Validation validation;
 
     @Override
+    
+    
     public Boolean saveCategory(CategoryDto categoryDto) {
+    	validation.categoryValidation(categoryDto);
         log.info("Saving category: {}", categoryDto);
 
         try {
         	// validation checking
-        	validation.categoryValidation(categoryDto);
+        	
             Category category = modelMapper.map(categoryDto, Category.class);
 
             if (ObjectUtils.isEmpty(category.getId())) {
