@@ -24,14 +24,14 @@ public class Validation {
             );
         }
 
-        // Name validation
         if (ObjectUtils.isEmpty(categoryDto.getName())) {
             error.put("name", "Name field is empty or null");
         } else {
-            if (categoryDto.getName().length() < 10) {
+            String name = categoryDto.getName().trim();
+            if (name.length() < 10) {
                 error.put("name", "Name length minimum is 10");
             }
-            if (categoryDto.getName().length() > 100) {
+            if (name.length() > 100) {
                 error.put("name", "Name length maximum is 100");
             }
         }

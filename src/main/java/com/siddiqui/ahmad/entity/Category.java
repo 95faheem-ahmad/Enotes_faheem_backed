@@ -4,9 +4,11 @@ import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +18,9 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="CATEGORY")
-public class Category {
+
+@EntityListeners(AuditingEntityListener.class)
+public class Category extends BaseModel{
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -26,14 +30,7 @@ public class Category {
 
 	private Boolean isActive;
 	private Boolean isDeleted;
-	private Integer createdBy;
 	
-	@CreationTimestamp
-	@Column(updatable = false)
-	private Date creationOn;
-	private Integer updatedBy;
-	@UpdateTimestamp
-	@Column(insertable=false)
-	private Date updatedOn;
+	
 
 }
