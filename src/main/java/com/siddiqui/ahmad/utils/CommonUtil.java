@@ -1,5 +1,6 @@
 package com.siddiqui.ahmad.utils;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,5 +34,31 @@ public class CommonUtil {
 		GenericResponse response = GenericResponse.builder().responseStatus(status).status("failed").message(message)
 				.build();
 		return response.create();
+	}
+
+	public static String getContenType(String originalFileName) {
+		String extension = FilenameUtils.getExtension(originalFileName);
+
+		switch (extension) {
+
+		case "pdf":
+			return "application/pdf";
+
+		case "xlsx":
+			return "application/vnd.openxml-officedocument.spreads.sheet";
+
+		case "txt":
+			return "text/plan";
+
+		case "png":
+			return "image/png";
+			
+		case "jpeg":
+			return "image/jpeg";
+			
+			default:
+				return "application/octet-stream";
+		}
+
 	}
 }
